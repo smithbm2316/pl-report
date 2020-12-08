@@ -10,8 +10,14 @@ export default function Home({ matches }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <h1 className="text-center">EPL Scores</h1>
-        {matches.length > 0 &&
+        <h1 className="my-4 text-center">PL Report</h1>
+        {matches.length === 0 ? (
+          <>
+            <p className="mx-auto my-auto text-lg font-medium">
+              No games today 😔
+            </p>
+          </>
+        ) : (
           matches.map((match) => {
             return (
               <ScoreCard
@@ -32,7 +38,8 @@ export default function Home({ matches }) {
                 time={match.status}
               />
             );
-          })}
+          })
+        )}
       </Layout>
     </>
   );

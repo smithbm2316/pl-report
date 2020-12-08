@@ -14,6 +14,9 @@ module.exports = {
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
+      colors: {
+        emerald: colors.emerald,
+      },
       fontFamily: {
         sans: [
           'Inter',
@@ -24,8 +27,8 @@ module.exports = {
           'sans-serif',
         ],
       },
-      colors: {
-        emerald: colors.emerald,
+      gridTemplateRows: {
+        mobile: '80px auto',
       },
     },
   },
