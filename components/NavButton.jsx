@@ -42,10 +42,7 @@ const NavIcon = ({ icon, styles }) => (
 const NavButton = ({ icon, title, link }) => (
   <Link href={link}>
     <a className="flex flex-col items-center justify-center flex-1 p-2 sm:flex-none sm:w-32 sm:h-30 active:bg-purple-800 hover:bg-purple-800">
-      <NavIcon
-        icon={icon}
-        styles="w-10 h-10 sm:w-12 sm:h-12 text-emerald-400"
-      />
+      <NavIcon icon={icon} styles="w-8 h-8 sm:w-10 sm:h-10 text-emerald-400" />
       <p className="text-xs font-semibold text-emerald-300 sm:text-base">
         {title}
       </p>

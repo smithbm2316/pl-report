@@ -1,9 +1,13 @@
 import Head from 'next/head';
-import Layout from '../components/Layout';
-import HeaderIcon from '../components/HeaderIcon';
-import ScoreCard from '../components/ScoreCard';
+import Layout from '../../components/Layout';
+import HeaderIcon from '../../components/HeaderIcon';
+import ScoreCard from '../../components/ScoreCard';
+import { useRouter } from 'next/router';
 
-export default function Home({ matches }) {
+const Gameweek = ({ matches }) => {
+  const router = useRouter();
+  const { matchday } = router.query;
+
   function parseUTCDate(utcDate) {
     const date = new Date(utcDate);
     const hours24 = date.getHours();
@@ -28,9 +32,6 @@ export default function Home({ matches }) {
       <Layout>
         {matches.length === 0 ? (
           <>
-            <header>
-              <h1 className="my-2 text-2xl text-center">PL Report</h1>
-            </header>
             <p className="mx-auto my-auto text-lg font-medium">
               No games today 😔
             </p>
@@ -41,19 +42,19 @@ export default function Home({ matches }) {
               <HeaderIcon
                 icon={'leftArrow'}
                 route={`${matches[0].utcDate.substring(0, 4)}-${
-                  matches[0].season.currentMatchday - 1
+                  matches[0].matchday - 1
                 }`}
               />
               <h1 className="text-2xl">PL Report</h1>
               <HeaderIcon
                 icon={'rightArrow'}
                 route={`${matches[0].utcDate.substring(0, 4)}-${
-                  matches[0].season.currentMatchday + 1
+                  matches[0].matchday + 1
                 }`}
               />
             </header>
-            <p className="my-2 text-center text-gray-500">
-              Matchday {matches[0].season.currentMatchday}
+            <p className="my-2 text-sm text-center text-gray-500">
+              Matchday {matches[0].matchday}
             </p>
             {matches.map((match) => {
               const [time, date] = parseUTCDate(match.utcDate);
@@ -82,15 +83,13 @@ export default function Home({ matches }) {
       </Layout>
     </>
   );
-}
+};
 
-export async function getServerSideProps() {
-  const todayDate = new Date();
-  const today = `${todayDate.getFullYear()}-${
-    todayDate.getMonth() + 1
-  }-${todayDate.getDate()}`;
+export async function getServerSideProps({ query }) {
+  const { matchday } = query;
+  const matchdayNum = matchday.split('-')[1];
   const res = await fetch(
-    `https://api.football-data.org/v2/matches?competitions=PL&dateFrom=${today}&dateTo=${today}`,
+    `https://api.football-data.org/v2/competitions/2021/matches?matchday=${matchdayNum}`,
     {
       method: 'GET',
       headers: {
@@ -105,3 +104,5 @@ export async function getServerSideProps() {
     props: { matches },
   };
 }
+
+export default Gameweek;
