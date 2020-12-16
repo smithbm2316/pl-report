@@ -19,6 +19,33 @@ export default function Home({ matches }) {
     return [timeStr, dateStr];
   }
 
+  function getMatchday(direction) {
+    const currentMatchday = matches[0].matchday;
+    const currentYear = matches[0].utcDate.substring(0, 4);
+    // if direction is 'prev'
+    if (direction === 'prev') {
+      // if the currentMatchday is 1, then we want to go back a year to the last week
+      if (currentMatchday === 1) {
+        return `${parseInt(currentYear) - 1}-38`;
+      }
+      // else just go back a matchday
+      else {
+        return `${currentYear}-${currentMatchday - 1}`;
+      }
+    }
+    // if direction is 'next'
+    else {
+      // check if the currently viewed year is the same as the current live season
+      // if so, we want to redirect to a page that says 'sorry this is the future'
+      // else, just move forward a matchday
+      if (currentYear === matches[0].season.endDate.substring(0, 4)) {
+        return 'future';
+      } else {
+        return `${currentYear}-${currentMatchday + 1}`;
+      }
+    }
+  }
+
   return (
     <>
       <Head>
@@ -38,19 +65,9 @@ export default function Home({ matches }) {
         ) : (
           <>
             <header className="flex items-center justify-between w-full">
-              <HeaderIcon
-                icon={'leftArrow'}
-                route={`${matches[0].utcDate.substring(0, 4)}-${
-                  matches[0].season.currentMatchday - 1
-                }`}
-              />
+              <HeaderIcon icon={'leftArrow'} route={getMatchday('prev')} />
               <h1 className="text-2xl">PL Report</h1>
-              <HeaderIcon
-                icon={'rightArrow'}
-                route={`${matches[0].utcDate.substring(0, 4)}-${
-                  matches[0].season.currentMatchday + 1
-                }`}
-              />
+              <HeaderIcon icon={'rightArrow'} route={getMatchday('next')} />
             </header>
             <p className="my-2 text-center text-gray-500">
               Matchday {matches[0].season.currentMatchday}
