@@ -13,14 +13,14 @@ export default function Today({ liveMatches, matches }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {matches === null ? (
-        <main className="h-screen">
-          <header>
-            <h1 className="my-4 text-center">PL Report</h1>
-          </header>
-          <div className="flex items-center justify-center text-lg font-medium h-5/6">
-            <p>No games today 😔</p>
-          </div>
-        </main>
+        <>
+          <main className="w-11/12 h-screen mx-auto 2xl:w-1420">
+            <Header page="Today" subtitle="Today's Matches" />
+            <div className="flex items-center justify-center text-lg font-medium h-5/6">
+              <p className="lg:font-semibold lg:text-xl">No games today 😔</p>
+            </div>
+          </main>
+        </>
       ) : (
         <Layout>
           <Header page="Today" subtitle="Today's Matches" />
