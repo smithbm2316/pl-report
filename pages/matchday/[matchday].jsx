@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Header from '../../components/Header';
 import Layout from '../../components/Layout';
 import Nav from '../../components/Nav';
 import MatchList from '../../components/MatchList';
@@ -15,7 +16,10 @@ const Matchday = ({ matches }) => {
         {matches === null ? (
           <Error404 />
         ) : (
-          <MatchList matches={matches} subtitle="Matchday" />
+          <>
+            <Header page="Matchday" matchInfo={matches[0]} />
+            <MatchList matches={matches} subtitle="Matchday" />
+          </>
         )}
       </Layout>
       <Nav />

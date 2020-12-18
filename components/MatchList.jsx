@@ -1,4 +1,3 @@
-import HeaderIcon from './HeaderIcon';
 import ScoreCard from './ScoreCard';
 
 const MatchList = ({ matches, subtitle }) => {
@@ -17,44 +16,22 @@ const MatchList = ({ matches, subtitle }) => {
     return [timeStr, dateStr];
   }
 
-  function getMatchday(direction) {
-    const currentMatchday = parseInt(matches[0].intRound);
-    const currentSeason = matches[0].strSeason;
-    const [seasonBegin, seasonEnd] = currentSeason.split('-');
-    // if direction is 'prev'
-    if (direction === 'prev') {
-      // if the currentMatchday is 1, then we want to go back a year to the last week
-      if (currentMatchday === 1) {
-        return `${parseInt(seasonBegin) - 1}-${parseInt(seasonEnd) - 1}-38`;
-      }
-      // else just go back a matchday
-      else {
-        return `${currentSeason}-${currentMatchday - 1}`;
-      }
-    }
-    // if direction is 'next'
-    else {
-      // if we are on the last matchday, then go to first matchday of next season
-      if (currentMatchday === 38) {
-        return `${parseInt(seasonBegin) + 1}-${parseInt(seasonEnd) + 1}-1`;
-      }
-      // else just go forward a matchday
-      else {
-        return `${currentSeason}-${currentMatchday + 1}`;
-      }
-    }
+  function parseMatchdayDates(startDate, endDate) {
+    const startList = startDate.match(/(\d*)-(\d*)-(\d*)/m);
+    const endList = endDate.match(/(\d*)-(\d*)-(\d*)/m);
+    return `${startList[2]}/${startList[3]}/${startList[1]} - ${endList[2]}/${endList[3]}/${endList[1]}`;
   }
 
   return (
     <>
-      <header className="flex items-center justify-between w-full">
-        <HeaderIcon icon={'leftArrow'} route={getMatchday('prev')} />
-        <h1>PL Report</h1>
-        <HeaderIcon icon={'rightArrow'} route={getMatchday('next')} />
-      </header>
-      <p className="my-2 text-center text-gray-500">
-        {subtitle === 'Today' ? 'Today' : `${subtitle} ${matches[0].intRound}`}
-      </p>
+      {subtitle !== 'Today' && (
+        <p className="my-2 text-center text-gray-500">
+          {parseMatchdayDates(
+            matches[0].dateEvent,
+            matches[matches.length - 1].dateEvent
+          )}
+        </p>
+      )}
       {matches.map((match) => {
         const [time, date] = parseUTCDate(match.strTimestamp);
         return (
@@ -65,7 +42,7 @@ const MatchList = ({ matches, subtitle }) => {
             awayTeam={match.strAwayTeam}
             awayScore={match.intAwayScore}
             status={match.strStatus}
-            date={date}
+            date={subtitle == 'Today' ? subtitle : date}
             time={time}
             matchID={match.idEvent}
           />

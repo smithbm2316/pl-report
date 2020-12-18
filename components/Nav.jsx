@@ -1,4 +1,5 @@
 import NavButton from './NavButton';
+
 const Nav = () => (
   <nav
     id="tabBar"
@@ -6,7 +7,8 @@ const Nav = () => (
   >
     <NavButton icon="table" link="/table" title="Table" />
     <NavButton icon="today" link="/" title="Today" />
-    <NavButton icon="favorite" link="/favorite" title="Favorite" />
+    <NavButton icon="matchday" link="/currentMatchday" title="Matchdays" />
+    {/* <NavButton icon="favorite" link="/favorite" title="Favorite" /> */}
   </nav>
 );
 

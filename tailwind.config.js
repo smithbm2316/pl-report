@@ -27,8 +27,8 @@ module.exports = {
           'sans-serif',
         ],
       },
-      gridTemplateRows: {
-        mobile: '80px auto',
+      screens: {
+        xs: '350px',
       },
     },
   },

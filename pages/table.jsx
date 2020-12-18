@@ -10,7 +10,7 @@ const Table = ({ table }) => (
     </Head>
     <Layout>
       <h1 className="my-4 text-center">PL Table</h1>
-      <table className="text-sm text-left">
+      <table className="w-full text-sm text-left">
         <thead>
           <tr>
             <th>Position</th>

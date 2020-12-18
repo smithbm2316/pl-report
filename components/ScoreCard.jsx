@@ -5,7 +5,6 @@ const ScoreCard = ({
   awayTeam,
   homeScore,
   awayScore,
-  status,
   date,
   time,
   matchID,
@@ -22,9 +21,9 @@ const ScoreCard = ({
         {homeTeam}
       </p>
       <p className="m-auto text-2xl font-bold grid row-span-3 col-span-1">
-        {['Match Finished', 'First Half', 'Second Half'].includes(status)
-          ? `${homeScore} : ${awayScore}`
-          : '⚽️'}
+        {homeScore === null && awayScore === null
+          ? '⚽️'
+          : `${homeScore} : ${awayScore}`}
       </p>
       <p className="my-auto ml-auto text-xs font-medium text-right grid row-span-3 col-span-2">
         {awayTeam}

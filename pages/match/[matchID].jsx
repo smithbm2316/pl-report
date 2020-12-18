@@ -1,7 +1,15 @@
 import Nav from '../../components/Nav';
 
-const Match = ({ info, stats, homeImg, awayImg }) => {
+const Match = ({ info, stats, homeLineup, awayLineup, homeImg, awayImg }) => {
   function parseUTCDate(utcDate) {
+    const date = new Date(utcDate);
+    const dateStr = `${
+      date.getMonth() + 1
+    }/${date.getDate()}/${date.getFullYear()}`;
+    return dateStr;
+  }
+
+  function parseUTCTime(utcDate) {
     const date = new Date(utcDate);
     const hours24 = date.getHours();
     const hours = hours24 >= 13 ? hours24 - 12 : hours24;
@@ -10,10 +18,7 @@ const Match = ({ info, stats, homeImg, awayImg }) => {
     const timeStr = `${hours === 0 ? 12 : hours}:${minutes}${
       hours24 <= 11 ? 'am' : 'pm'
     }`;
-    const dateStr = `${
-      date.getMonth() + 1
-    }/${date.getDate()}/${date.getFullYear()}`;
-    return [timeStr, dateStr];
+    return timeStr;
   }
 
   return (
@@ -28,51 +33,106 @@ const Match = ({ info, stats, homeImg, awayImg }) => {
         </main>
       ) : (
         <main className="w-11/12 mx-auto">
-          <header className="mx-auto my-4 grid grid-rows-1 grid-cols-2">
-            <div className="flex flex-col items-center justify-center">
+          <header className="mx-auto my-6 grid grid-cols-3">
+            <div className="flex flex-col items-center">
               <img
                 className="w-12 h-12 my-2"
                 src={homeImg}
                 alt={info.strHomeTeam}
               />
-              <p>{info.strHomeTeam} </p>
+              <p className="flex-wrap text-center">{info.strHomeTeam} </p>
             </div>
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex items-center justify-center">
+              <p className="text-3xl font-bold">
+                <span
+                  className={
+                    parseInt(info.intHomeScore) > parseInt(info.intAwayScore)
+                      ? 'text-pink-400'
+                      : 'text-gray-100'
+                  }
+                >
+                  {info.intHomeScore}
+                </span>
+                <span> : </span>
+                <span
+                  className={
+                    parseInt(info.intAwayScore) > parseInt(info.intHomeScore)
+                      ? 'text-pink-400'
+                      : 'text-gray-100'
+                  }
+                >
+                  {info.intAwayScore}
+                </span>
+              </p>
+            </div>
+            <div className="flex flex-col items-center">
               <img
                 className="w-12 h-12 my-2"
                 src={awayImg}
                 alt={info.strAwayTeam}
               />
-              <p>{info.strAwayTeam} </p>
+              <p className="flex-wrap text-center">{info.strAwayTeam} </p>
             </div>
           </header>
           <section
-            className="w-full my-4 text-gray-600 grid grid-rows-1 grid-cols-2"
+            className="flex flex-col items-center justify-center w-full my-6 text-gray-600"
             id="matchInfo"
           >
-            <div className="flex flex-col items-center justify-center">
-              <p>{parseUTCDate(info.strTimestamp)[0]}</p>
-              <p>{parseUTCDate(info.strTimestamp)[1]}</p>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <p>{info.strVenue}</p>
-            </div>
+            <p>{parseUTCTime(info.strTimestamp)}</p>
+            <p>{parseUTCDate(info.strTimestamp)}</p>
+            <p>{info.strVenue}</p>
           </section>
-          <section className="stats">
-            {stats === null ? (
-              <div className="flex flex-col items-center justify-center text-center">
-                <p className="font-medium">Match data was not found 😔</p>
+          {homeLineup.length > 0 && awayLineup.length > 0 && (
+            <section className="my-6 text-xs xs:text-sm grid grid-cols-2">
+              <h3 className="mb-1 text-center col-span-2">Lineups</h3>
+              <div>
+                {homeLineup.map((player) => (
+                  <div
+                    key={player.idPlayer}
+                    className="py-1 grid"
+                    style={{ gridTemplateColumns: '2rem 1fr' }}
+                  >
+                    <p>{player.intSquadNumber}</p>
+                    <p>{player.strPlayer}</p>
+                  </div>
+                ))}
               </div>
-            ) : (
-              stats.map((stat) => (
-                <div className="flex justify-between" key={stat.idStatistic}>
+              <div className="text-right">
+                {awayLineup.map((player) => (
+                  <div
+                    key={player.idPlayer}
+                    className="py-1 grid "
+                    style={{ gridTemplateColumns: '1fr 2rem' }}
+                  >
+                    <p>{player.strPlayer}</p>
+                    <p>{player.intSquadNumber}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+          {stats === null ? (
+            <section className="flex flex-col items-center justify-center my-6 text-center">
+              <p className="font-medium">
+                Match stats not available yet, check back again later!
+              </p>
+            </section>
+          ) : (
+            <section>
+              <h3 className="mb-1 text-center">Match Stats</h3>
+              {stats.map((stat) => (
+                <div
+                  className="flex justify-between text-xs xs:text-sm"
+                  key={stat.idStatistic}
+                >
                   <p>{stat.intHome}</p>
                   <p>{stat.strStat}</p>
                   <p>{stat.intAway}</p>
                 </div>
-              ))
-            )}
-          </section>
+              ))}
+            </section>
+          )}
+          <div className="h-20 sm:h-24"></div>
         </main>
       )}
       <Nav />
@@ -90,9 +150,15 @@ export async function getServerSideProps({ query }) {
 
   // Request match stats
   const statsRes = await fetch(
-    `https://www.thesportsdb.com/api/v1/json/${process.env.SPORTS_DB_PUB_KEY}/lookupeventstats.php?id=${matchID}`
+    `https://www.thesportsdb.com/api/v1/json/${process.env.SPORTS_DB_KEY}/lookupeventstats.php?id=${matchID}`
   );
   const statsData = await statsRes.json();
+
+  const lineupRes = await fetch(
+    `https://www.thesportsdb.com/api/v1/json/${process.env.SPORTS_DB_KEY}/lookuplineup.php?id=${matchID}`
+  );
+  const lineupData = await lineupRes.json();
+  console.log(lineupData);
 
   // Request home team data to get image art
   const homeTeamRes = await fetch(
@@ -110,8 +176,16 @@ export async function getServerSideProps({ query }) {
     props: {
       info: infoData.events[0],
       stats: statsData.eventstats,
-      homeImg: `${homeTeamData.teams[0].strTeamBadge}/preview`,
-      awayImg: `${awayTeamData.teams[0].strTeamBadge}/preview`,
+      homeLineup:
+        lineupData.lineup === null || lineupData.lineup.length === 0
+          ? []
+          : lineupData.lineup.slice(0, 11),
+      awayLineup:
+        lineupData.lineup === null || lineupData.lineup.length === 0
+          ? []
+          : lineupData.lineup.slice(11),
+      homeImg: `${homeTeamData.teams[0].strTeamBadge}`,
+      awayImg: `${awayTeamData.teams[0].strTeamBadge}`,
     },
   };
 }
