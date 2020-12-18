@@ -98,7 +98,7 @@ const Match = ({ info, stats, homeLineup, awayLineup, homeImg, awayImg }) => {
               </section>
             )}
             {stats === null ? (
-              <section className="flex flex-col items-center justify-center my-6 text-center md:w-3/4 md:mx-auto xl:w-full">
+              <section className="flex flex-col items-center justify-center mt-20 text-center md:w-3/4 md:mx-auto xl:w-full xl:col-span-2">
                 <p className="font-medium">
                   Match stats not available yet, check back again later!
                 </p>
