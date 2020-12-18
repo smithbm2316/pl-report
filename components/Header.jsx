@@ -1,6 +1,6 @@
 import HeaderIcon from './HeaderIcon';
 
-const Header = ({ page, matchInfo }) => {
+const Header = ({ page, matchInfo, subtitle }) => {
   function getMatchday(direction) {
     const currentMatchday = parseInt(matchInfo.intRound);
     const currentSeason = matchInfo.strSeason;
@@ -30,15 +30,21 @@ const Header = ({ page, matchInfo }) => {
   }
   return (
     <>
-      {page === 'Today' ? (
-        <header>
-          <h1 className="my-4 text-center">Today's Matches</h1>
+      {page === 'Today' || page === 'Table' ? (
+        <header className="md:col-span-2 md:mt-4 2xl:col-span-3">
+          <h1 className="my-2 text-laserwave-hotPink">PL Report</h1>
+          <h2 className="my-2">{subtitle}</h2>
         </header>
       ) : (
-        <header className="flex items-center justify-between w-full my-4">
-          <HeaderIcon icon={'leftArrow'} route={getMatchday('prev')} />
-          <h1>{`${page} ${matchInfo.intRound}`}</h1>
-          <HeaderIcon icon={'rightArrow'} route={getMatchday('next')} />
+        <header className="w-full md:col-span-2 md:mt-4 2xl:col-span-3">
+          <h1 className="my-2 text-laserwave-hotPink">PL Report</h1>
+          <div className="flex items-center justify-between ">
+            <h2 className="flex items-center">{`${page} ${matchInfo.intRound}`}</h2>
+            <div className="flex items-center justify-between">
+              <HeaderIcon icon={'leftArrow'} route={getMatchday('prev')} />
+              <HeaderIcon icon={'rightArrow'} route={getMatchday('next')} />
+            </div>
+          </div>
         </header>
       )}
     </>

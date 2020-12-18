@@ -25,7 +25,7 @@ const MatchList = ({ matches, subtitle }) => {
   return (
     <>
       {subtitle !== 'Today' && (
-        <p className="my-2 text-center text-gray-500">
+        <p className="text-center text-laserwave-magenta md:col-span-2 md:font-medium md:text-lg 2xl:col-span-3">
           {parseMatchdayDates(
             matches[0].dateEvent,
             matches[matches.length - 1].dateEvent

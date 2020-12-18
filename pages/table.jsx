@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Layout from '../components/Layout';
+import Header from '../components/Header';
 import Nav from '../components/Nav';
 
 const Table = ({ table }) => (
@@ -8,21 +8,21 @@ const Table = ({ table }) => (
       <title>PL Report: Table</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
-    <Layout>
-      <h1 className="my-4 text-center">PL Table</h1>
-      <table className="w-full text-sm text-left">
-        <thead>
+    <main className="w-11/12 mx-auto lg:w-5/6 xl:w-1024">
+      <Header page="Table" subtitle="Premier League Table" />
+      <table className="w-full my-4 text-sm text-left md:my-6">
+        <thead className="text-sm font-medium sm:text-base md:font-semibold md:text-lg">
           <tr>
-            <th>Position</th>
-            <th>Club</th>
-            <th>Points</th>
-            <th>GD</th>
-            <th>W</th>
-            <th>D</th>
-            <th>L</th>
+            <th className="w-8 py-1">#</th>
+            <th className="py-1">Club</th>
+            <th className="py-1">Points</th>
+            <th className="py-1">GD</th>
+            <th className="py-1">W</th>
+            <th className="py-1">D</th>
+            <th className="py-1">L</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="font-medium md:text-base">
           {table.map((teamInfo) => {
             const name = teamInfo.team.name.replace(/FC/, '').trim().split(' ');
             let teamName;
@@ -36,26 +36,27 @@ const Table = ({ table }) => (
 
             return (
               <tr key={teamInfo.team.id}>
-                <td>{teamInfo.position}</td>
-                <td className="flex items-center">
+                <td className="w-8">{teamInfo.position}</td>
+                <td className="flex items-center py-1">
                   <img
-                    className="w-8 h-8 px-1"
+                    className="w-8 h-auto mr-1 sm:w-10 sm:mr-4 md:w-12"
                     src={teamInfo.team.crestUrl}
                     alt={teamInfo.team.name}
                   />
                   <span className="px-1">{teamName}</span>
                 </td>
-                <td>{teamInfo.points}</td>
-                <td>{teamInfo.goalDifference}</td>
-                <td>{teamInfo.won}</td>
-                <td>{teamInfo.draw}</td>
-                <td>{teamInfo.lost}</td>
+                <td className="py-1">{teamInfo.points}</td>
+                <td className="py-1">{teamInfo.goalDifference}</td>
+                <td className="py-1">{teamInfo.won}</td>
+                <td className="py-1">{teamInfo.draw}</td>
+                <td className="py-1">{teamInfo.lost}</td>
               </tr>
             );
           })}
         </tbody>
       </table>
-    </Layout>
+      <div className="h-20 sm:h-24"></div>
+    </main>
     <Nav />
   </>
 );

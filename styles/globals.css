@@ -6,11 +6,11 @@
 
 @layer base {
   :root {
-    @apply font-sans font-normal text-gray-100 bg-gray-900;
+    @apply font-sans font-normal text-laserwave-white bg-laserwave-midnight;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply text-purple-300;
+    @apply text-laserwave-magenta;
   }
 
   h1 {

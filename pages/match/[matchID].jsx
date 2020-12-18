@@ -32,108 +32,100 @@ const Match = ({ info, stats, homeLineup, awayLineup, homeImg, awayImg }) => {
           </p>
         </main>
       ) : (
-        <main className="w-11/12 mx-auto">
-          <header className="mx-auto my-6 grid grid-cols-3">
+        <>
+          <header className="py-6 font-medium px-auto grid grid-cols-3 sm:text-lg md:font-semibold md:text-xl bg-laserwave-blackout">
             <div className="flex flex-col items-center">
               <img
-                className="w-12 h-12 my-2"
+                className="w-12 h-auto my-2 sm:w-14 md:w-16"
                 src={homeImg}
                 alt={info.strHomeTeam}
               />
               <p className="flex-wrap text-center">{info.strHomeTeam} </p>
             </div>
             <div className="flex items-center justify-center">
-              <p className="text-3xl font-bold">
-                <span
-                  className={
-                    parseInt(info.intHomeScore) > parseInt(info.intAwayScore)
-                      ? 'text-pink-400'
-                      : 'text-gray-100'
-                  }
-                >
-                  {info.intHomeScore}
-                </span>
+              <p className="text-3xl font-bold sm:text-4xl">
+                <span>{info.intHomeScore}</span>
                 <span> : </span>
-                <span
-                  className={
-                    parseInt(info.intAwayScore) > parseInt(info.intHomeScore)
-                      ? 'text-pink-400'
-                      : 'text-gray-100'
-                  }
-                >
-                  {info.intAwayScore}
-                </span>
+                <span>{info.intAwayScore}</span>
               </p>
             </div>
             <div className="flex flex-col items-center">
               <img
-                className="w-12 h-12 my-2"
+                className="w-12 h-auto my-2 sm:w-14 md:w-16"
                 src={awayImg}
                 alt={info.strAwayTeam}
               />
               <p className="flex-wrap text-center">{info.strAwayTeam} </p>
             </div>
+            <p className="mt-4 text-sm font-normal text-center sm:text-base sm:mt-8">
+              {parseUTCTime(info.strTimestamp)}
+            </p>
+            <p className="mt-4 text-sm font-normal text-center sm:text-base sm:mt-8">
+              {parseUTCDate(info.strTimestamp)}
+            </p>
+            <p className="mt-4 text-sm font-normal text-center sm:text-base sm:mt-8">
+              {info.strVenue}
+            </p>
           </header>
-          <section
-            className="flex flex-col items-center justify-center w-full my-6 text-gray-600"
-            id="matchInfo"
-          >
-            <p>{parseUTCTime(info.strTimestamp)}</p>
-            <p>{parseUTCDate(info.strTimestamp)}</p>
-            <p>{info.strVenue}</p>
-          </section>
-          {homeLineup.length > 0 && awayLineup.length > 0 && (
-            <section className="my-6 text-xs xs:text-sm grid grid-cols-2">
-              <h3 className="mb-1 text-center col-span-2">Lineups</h3>
-              <div>
-                {homeLineup.map((player) => (
-                  <div
-                    key={player.idPlayer}
-                    className="py-1 grid"
-                    style={{ gridTemplateColumns: '2rem 1fr' }}
-                  >
-                    <p>{player.intSquadNumber}</p>
-                    <p>{player.strPlayer}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="text-right">
-                {awayLineup.map((player) => (
-                  <div
-                    key={player.idPlayer}
-                    className="py-1 grid "
-                    style={{ gridTemplateColumns: '1fr 2rem' }}
-                  >
-                    <p>{player.strPlayer}</p>
-                    <p>{player.intSquadNumber}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
-          {stats === null ? (
-            <section className="flex flex-col items-center justify-center my-6 text-center">
-              <p className="font-medium">
-                Match stats not available yet, check back again later!
-              </p>
-            </section>
-          ) : (
-            <section>
-              <h3 className="mb-1 text-center">Match Stats</h3>
-              {stats.map((stat) => (
-                <div
-                  className="flex justify-between text-xs xs:text-sm"
-                  key={stat.idStatistic}
-                >
-                  <p>{stat.intHome}</p>
-                  <p>{stat.strStat}</p>
-                  <p>{stat.intAway}</p>
+          <main className="w-11/12 mx-auto xl:grid xl:grid-cols-2 xl:gap-x-14 xl:w-5/6 2xl:w-1280">
+            {homeLineup.length > 0 && awayLineup.length > 0 && (
+              <section className="my-6 text-xs xs:text-sm grid grid-cols-2 md:w-3/4 md:mx-auto xl:w-full">
+                <h3 className="mb-1 text-center col-span-2">Lineups</h3>
+                <div className="text-left sm:text-base">
+                  {homeLineup.map((player) => (
+                    <div
+                      key={player.idPlayer}
+                      className="py-1 grid"
+                      style={{ gridTemplateColumns: '2rem 1fr' }}
+                    >
+                      <p>{player.intSquadNumber}</p>
+                      <p>{player.strPlayer}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </section>
-          )}
-          <div className="h-20 sm:h-24"></div>
-        </main>
+                <div className="text-right sm:text-base">
+                  {awayLineup.map((player) => (
+                    <div
+                      key={player.idPlayer}
+                      className="py-1 grid "
+                      style={{ gridTemplateColumns: '1fr 2rem' }}
+                    >
+                      <p>{player.strPlayer}</p>
+                      <p>{player.intSquadNumber}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+            {stats === null ? (
+              <section className="flex flex-col items-center justify-center my-6 text-center md:w-3/4 md:mx-auto xl:w-full">
+                <p className="font-medium">
+                  Match stats not available yet, check back again later!
+                </p>
+              </section>
+            ) : (
+              <section className="md:my-8 md:w-3/4 md:mx-auto xl:w-full">
+                <h3 className="mb-1 text-center">Match Stats</h3>
+                {stats.map((stat) => (
+                  <div
+                    className="flex justify-between text-sm sm:text-base sm:my-1"
+                    key={stat.idStatistic}
+                  >
+                    <p>{stat.intHome}</p>
+                    {stat.strStat !== 'Shots insidebox' &&
+                      stat.strStat !== 'Shots outsidebox' && (
+                        <p>{stat.strStat}</p>
+                      )}
+                    {stat.strStat === 'Shots insidebox' && 'Shots Inside Box'}
+                    {stat.strStat === 'Shots outsidebox' && 'Shots Outside Box'}
+                    <p>{stat.intAway}</p>
+                  </div>
+                ))}
+              </section>
+            )}
+            <div className="h-20 sm:h-24"></div>
+          </main>
+        </>
       )}
       <Nav />
     </>
@@ -158,7 +150,6 @@ export async function getServerSideProps({ query }) {
     `https://www.thesportsdb.com/api/v1/json/${process.env.SPORTS_DB_KEY}/lookuplineup.php?id=${matchID}`
   );
   const lineupData = await lineupRes.json();
-  console.log(lineupData);
 
   // Request home team data to get image art
   const homeTeamRes = await fetch(

@@ -2,9 +2,9 @@ import Link from 'next/link';
 
 const HeaderIcon = ({ icon, route }) => (
   <Link href={`/matchday/${route}`} passHref>
-    <button>
+    <button className="w-10 h-10 p-1 ml-2 rounded-lg md:ml-6 md:w-14 md:h-14 hover:bg-laserwave-night hover:shadow-inner">
       <svg
-        className="w-10 h-10 p-1 mx-1 text-green-400 rounded-lg hover:bg-gray-800 hover:shadow-inner"
+        className="text-emerald-400"
         fill="currentColor"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"

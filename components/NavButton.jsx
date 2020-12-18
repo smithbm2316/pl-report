@@ -29,16 +29,14 @@ const NavIcon = ({ icon, styles, text }) => (
         <path d="M2 6a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 100 4v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2a2 2 0 100-4V6z" />
       )}
     </svg>
-    <p className="text-xs font-semibold text-emerald-300 sm:text-base">
-      {text}
-    </p>
+    <p className="text-xs font-semibold text-black sm:text-base">{text}</p>
   </>
 );
 
 const NavButton = ({ icon, title, link }) => (
   <Link href={link} passHref>
-    <a className="flex flex-col items-center justify-center flex-1 sm:flex-none sm:w-32 sm:h-30 active:bg-purple-800 hover:bg-purple-800">
-      <NavIcon icon={icon} styles="w-8 sm:w-10 text-emerald-400" text={title} />
+    <a className="flex flex-col items-center justify-center flex-1 sm:flex-none sm:w-32 sm:h-30 active:bg-emerald-400 hover:bg-emerald-400">
+      <NavIcon icon={icon} styles="w-8 sm:w-10 text-black" text={title} />
     </a>
   </Link>
 );

@@ -23,7 +23,7 @@ export default function Today({ liveMatches, matches }) {
         </main>
       ) : (
         <Layout>
-          <Header page="Today" />
+          <Header page="Today" subtitle="Today's Matches" />
           {liveMatches.length > 0 &&
             liveMatches.map((match) => (
               <ScoreCard
@@ -63,10 +63,15 @@ export async function getServerSideProps() {
     `https://www.thesportsdb.com/api/v2/json/${process.env.SPORTS_DB_KEY}/livescore.php?s=Soccer`
   );
   const liveData = await liveRes.json();
-  console.log(liveData);
-  const premData = liveData.events.filter(
-    (event) => parseInt(event.idLeague) === 4328
-  );
+
+  // filter for premier league data if there is any live premier league games to be found
+  let premData = [];
+  if (liveData.events !== null) {
+    premData = liveData.events.filter(
+      (event) => parseInt(event.idLeague) === 4328
+    );
+  }
+
   // If there is no live match data, then just return the events occurring today
   if (premData.length === 0) {
     return {
